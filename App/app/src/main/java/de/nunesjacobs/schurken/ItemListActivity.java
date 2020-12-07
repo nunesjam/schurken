@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.database.sqlite.SQLiteDatabase;
 
 import de.nunesjacobs.schurken.dummy.DummyContent;
 
@@ -47,12 +48,14 @@ public class ItemListActivity extends AppCompatActivity {
         toolbar.setTitle(getTitle());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        schurkenDatabase = openOrCreateDatabase("schurken.db",
+                SQLiteDatabase.CREATE_IF_NECESSARY, null);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-            }
+            };
         });
 
         if (findViewById(R.id.item_detail_container) != null) {
@@ -67,6 +70,11 @@ public class ItemListActivity extends AppCompatActivity {
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
     }
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    };
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
